@@ -114,7 +114,7 @@ public sealed class RecommendationReportService(
             .Select((candidate, index) =>
             {
                 var walkingMetrics = walkingRoutes[index].Metrics;
-                var mapMetrics = walkingMetrics ?? candidate.Metrics;
+                var mapMetrics = candidate.Metrics;
                 return new StaticMapMarker(
                     candidate.Hotel.Name,
                     candidate.Location,

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using RPAOtelRezervasyon.Application.Caching;
 using RPAOtelRezervasyon.Domain.Models;
@@ -25,10 +26,16 @@ public sealed class MongoGeocodeCacheTests
 
         try
         {
-            var writer = new MongoGeocodeCache(collection, NullLogger<MongoGeocodeCache>.Instance);
+            var capture = new CapturingLoggerProvider();
+            using var loggerFactory = LoggerFactory.Create(builder => builder.AddProvider(capture));
+            var writer = new MongoGeocodeCache(collection, loggerFactory.CreateLogger<MongoGeocodeCache>());
             var location = new GeoPoint(39.9208, 32.8541);
 
             await writer.StoreAsync("geoapify", "grand hotel ankara", location, "Grand Hotel, Ankara", CancellationToken.None);
+            var successLog = Assert.Single(capture.Messages);
+            Assert.Contains("Geocode cache upsert completed", successLog, StringComparison.Ordinal);
+            Assert.DoesNotContain("grand hotel ankara", successLog, StringComparison.Ordinal);
+            Assert.DoesNotContain("39.9208", successLog, StringComparison.Ordinal);
 
             // "Yeniden başlatma": okuma yeni bir cache örneğiyle yapılır (AC-15).
             var reader = new MongoGeocodeCache(collection, NullLogger<MongoGeocodeCache>.Instance);
@@ -47,6 +54,10 @@ public sealed class MongoGeocodeCacheTests
             Assert.NotNull(document);
             Assert.Equal("grand hotel ankara", document.NormalizedName);
             Assert.Equal(DateTimeKind.Utc, document.CreatedAt.Kind);
+
+            var health = await new MongoGeocodeCacheHealthCheck(collection.Database)
+                .CheckHealthAsync(new Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext());
+            Assert.Equal(Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy, health.Status);
         }
         finally
         {

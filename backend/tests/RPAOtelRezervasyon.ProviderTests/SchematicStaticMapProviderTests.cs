@@ -266,6 +266,31 @@ public sealed class SchematicStaticMapProviderTests
     }
 
     [Fact]
+    public void Overlay_keeps_the_exact_hotel_anchor_visible_when_its_badge_moves()
+    {
+        using var surface = SKSurface.Create(new SKImageInfo(360, 240));
+        surface.Canvas.Clear(SKColors.White);
+        var venue = new GeoPoint(41, 29);
+        var hotel = new GeoPoint(41.0001, 29.0001);
+        var request = new StaticMapRequest(venue, [new StaticMapMarker("Otel", hotel, true)], 360, 240);
+        var projected = new Dictionary<GeoPoint, SKPoint>
+        {
+            [venue] = new(180, 120),
+            [hotel] = new(199, 120),
+        };
+
+        StaticMapOverlay.Draw(surface.Canvas, request, point => projected[point]);
+
+        using var image = surface.Snapshot();
+        using var bitmap = SKBitmap.FromImage(image);
+        var badgeCenter = StaticMapOverlay.PlaceMarkerLabels(
+            [projected[hotel]], projected[venue], new SKRect(0, 0, 360, 240), selectedIndex: 0).Single();
+        var anchorPixels = CountColorIn(bitmap, StaticMapOverlay.RouteColor(true, 0), new SKRect(194, 115, 204, 125));
+
+        Assert.NotEqual(projected[hotel], badgeCenter);
+        Assert.True(anchorPixels >= 45, $"The exact hotel coordinate should stay visible after its badge moves; found {anchorPixels} pixels.");
+    }
+    [Fact]
     public async Task RenderAsync_distinguishes_nearby_markers_and_keeps_the_venue_moderate()
     {
         var point = new GeoPoint(41.0, 29.0);

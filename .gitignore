@@ -4,6 +4,10 @@ Thumbs.db
 .idea/
 *.swp
 
+a
+# Local launch profile may contain developer-only API keys and database credentials.
+/backend/src/RPAOtelRezervasyon.Api/Properties/launchSettings.json
+
 # Logs
 *.log
 

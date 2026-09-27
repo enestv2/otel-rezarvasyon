@@ -66,6 +66,7 @@ sonuçları bu önbellekten okunur/yazılır; dış sağlayıcılar arayüz arka
 ## Gözlemlenebilirlik
 - Sağlayıcı-başı metrikler: gecikme, hata oranı, retry/circuit-breaker sayacı ve **önbellek isabet oranı**.
 - Sağlayıcı erişilebilirliği ve MongoDB ayrı **health check**'lerle raporlanır.
+- Mongo geocode cache durumu `/health/storage`, dış sağlayıcı durumu `/health/providers` üzerinden raporlanır. Cache isteğin zorunlu bağımlılığı olmadığından Mongo erişim hatası `Degraded` durumudur.
 - Loglar yapılandırılmıştır; sır ve PII yazılmaz (yalnızca "tanımlı/tanımsız" bilgisi).
 
 ## İletişim kuralları

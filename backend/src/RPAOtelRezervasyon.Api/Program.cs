@@ -103,6 +103,11 @@ app.MapHealthChecks("/health/providers", new HealthCheckOptions
     Predicate = registration => registration.Tags.Contains(ProviderHealthChecks.ProviderTag),
 })
     .AllowAnonymous();
+app.MapHealthChecks("/health/storage", new HealthCheckOptions
+{
+    Predicate = registration => registration.Tags.Contains("storage"),
+})
+    .AllowAnonymous();
 app.MapControllers();
 
 app.Run();

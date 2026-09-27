@@ -109,15 +109,13 @@ internal static class StaticMapOverlay
         var labels = new List<SKRect>(points.Length);
         using var leaderCasing = new SKPaint
         {
-            Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 4,
+            Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 4.5f,
             StrokeCap = SKStrokeCap.Round, IsAntialias = true,
         };
         using var leader = new SKPaint
         {
-            Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f, StrokeCap = SKStrokeCap.Round, IsAntialias = true,
+            Style = SKPaintStyle.Stroke, StrokeWidth = 2.5f, StrokeCap = SKStrokeCap.Round, IsAntialias = true,
         };
-        using var anchorHalo = new SKPaint { Color = SKColors.White, IsAntialias = true };
-        using var anchor = new SKPaint { IsAntialias = true };
         using var halo = new SKPaint { Color = SKColors.White, IsAntialias = true };
         using var font = new SKFont(SKTypeface.Default, 10);
         using var labelPaint = new SKPaint { Color = SKColors.White, IsAntialias = true };
@@ -143,9 +141,7 @@ internal static class StaticMapOverlay
                     labelCenter.Y - ((direction.Y / directionLength) * (radius + 1)));
                 canvas.DrawLine(point, labelEdge, leaderCasing);
                 canvas.DrawLine(point, labelEdge, leader);
-                anchor.Color = color;
-                canvas.DrawCircle(point, 3, anchorHalo);
-                canvas.DrawCircle(point, 1.8f, anchor);
+                DrawHotelLocationAnchor(canvas, point, color);
             }
 
             canvas.DrawCircle(labelCenter, radius + 1.5f, halo);
@@ -154,6 +150,14 @@ internal static class StaticMapOverlay
             canvas.DrawCircle(labelCenter, radius, badge);
             DrawCenteredText(canvas, (rank + 1).ToString(CultureInfo.InvariantCulture), labelCenter, font, labelPaint);
         }
+    }
+
+    internal static void DrawHotelLocationAnchor(SKCanvas canvas, SKPoint point, SKColor color)
+    {
+        using var halo = new SKPaint { Color = SKColors.White, IsAntialias = true };
+        using var anchor = new SKPaint { Color = color, IsAntialias = true };
+        canvas.DrawCircle(point, 6.5f, halo);
+        canvas.DrawCircle(point, 4.5f, anchor);
     }
 
     private static void DrawVenue(SKCanvas canvas, SKPoint point)

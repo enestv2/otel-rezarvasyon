@@ -1,6 +1,6 @@
 # Spec 0017 - Harita konum hizalamasi
 
-- Status: Draft
+- Status: In progress
 - Mode: lite
 - Plan: `specs/plans/0017-plan.md`
 
@@ -15,14 +15,14 @@ Etkinlik alanini ve otel konumlarini gosteren PDF haritasinda isaretciler ile ta
 
 ## Constraints & out of scope
 - Geocoding veya routing saglayicilarinin koordinat cevabi degistirilmez.
-- Harita saglayicisi, PDF yerlesimi, geocoding kapsam kalitesi ve rota secim politikasi degismez.
-- Duzeltme taban haritanin zoom ve piksel yogunlugu ile kullandigi Web Mercator olcegi dogrulanarak yapilir.
+- Harita saglayicisi, geocoding kapsam kalitesi ve rota secim politikasi degismez.
+- Saglayicinin zoom projeksiyon olcegi degistirilmez; gercek konum isareti ve lejant belirginlestirilir.
 
 ## Acceptance criteria
-- [ ] AC-1 Hosted harita projeksiyonu referans lat/lon noktalarini taban harita piksel koordinatlariyla ayni yere donusturur.
-- [ ] AC-2 Fit zoom secimi etkinlik, otel ve rota geometrilerinin tamamini cizim alanina sigdirir.
-- [ ] AC-3 Sematik harita etkinlik ve otel isaretcilerini verilen koordinatlara gore dogru yerlestirir.
-- [ ] AC-4 Etkinlik pini, otel pinleri ve rota katmani arasinda koordinat donusum kaynakli kayma kalmaz.
+- [ ] AC-1 Etkinlik pini verilen koordinatta kalir; PDF rozeti ile gercek otel konumu baglantisini aciklar.
+- [ ] AC-2 Otel gercek konum noktasi, numara rozeti baska yere tasindiginda yeterince gorunur kalir.
+- [ ] AC-3 Otel numara rozeti baglantisi konum noktasinda biter ve lejant bunu gercek konum olarak aciklar.
+- [ ] AC-4 Walking route geometry does not replace road route geometry on the overview map.
 
 ## Definition of Done
 - [ ] Her kabul kriteri test veya tekrar edilebilir gozlemle kanitlanir.
@@ -31,7 +31,14 @@ Etkinlik alanini ve otel konumlarini gosteren PDF haritasinda isaretciler ile ta
 - [ ] Spec `specs/done/` konumuna tasinir.
 
 ## Diagnosis status
-- The initial 512-pixel hypothesis is not confirmed. Geoapify documents `scaleFactor` as output pixel density and standard map tiles as 256 x 256, but its Static Maps endpoint reference does not specify world-pixel scale for `zoom`.
-- The experimental test expecting 512 pixels per world at zoom 0 was assumption-based; it was removed along with the provisional code change.
-- No PDF/image or known coordinates from the affected map were supplied, so the issue cannot yet be reproduced against the rendered basemap. No production source change remains from this investigation.
-- `scripts/check` previously returned `Access is denied`; a running API process also prevented replacement of its build output.
+Goruntudeki PDF haritasi, varsa yurumeye ait rota geometrisini ana rota olarak secip road route lejantiyle gosteriyordu. Bu, yol metriyle rota cizgisinin farkli hedef/ulasilabilir noktalara gitmesine ve otel pininin kaymis gorunmesine yol acabilir. Ana harita her zaman siralama ve tabloda kullanilan yol geometrisini gostermeli. Ayrica numara rozeti cakisma onleme nedeniyle tasindiginda gercek koordinat ucu daha gorunur yapilmali.
+## Verification evidence (2026-09-27)
+- The supplied PDF screenshot exposed that the overview can use walking geometry while the map legend describes a road route.
+- Added unit regression `CreateAsync_keeps_the_road_route_on_the_map_and_walking_metrics_separate`; it passes.
+- Added render regression for a displaced hotel badge; it verifies the exact-coordinate anchor remains visible and passes.
+- The PDF integration test verifies the updated legend text and passes.
+- Full solution build succeeds with `-warnaserror` (0 warnings, 0 errors).
+- Focused road-geometry unit tests pass (2/2); schematic-fallback PDF integration passes (1/1).
+- Full test run: UnitTests 106/106, ArchitectureTests 5/5, ProviderTests 44/45, IntegrationTests 51/52 (4 skipped). The provider failure is Windows Event Log permission denied; the remaining integration failure expects 2 Geoapify HTTP calls but receives 1 in `Post_pdf_uses_geoapify_base_map_and_includes_attribution`.
+- Independent read-only review found no remaining actionable issues.
+- `scripts/check` could not execute in this PowerShell environment (`bash scripts/check` returned Access is denied); `git diff --check` passes (only line-ending normalization warnings).

@@ -115,8 +115,7 @@ public class RecommendationReportServiceTests
         request.Markers.Select(marker => marker.Label).Should().ContainInOrder(NearHotel, FarHotel);
         request.Markers.Single(marker => marker.Label == NearHotel).IsSelected.Should().BeTrue();
         request.Markers.Single(marker => marker.Label == FarHotel).IsSelected.Should().BeFalse();
-        request.Markers.Single(marker => marker.Label == NearHotel).Path.Should()
-            .Equal(new GeoPoint(41.1, 29.1), VenueLocation);
+        request.Markers.Single(marker => marker.Label == NearHotel).Path.Should().Equal(NearPath);
         request.Markers.Single(marker => marker.Label == FarHotel).Path.Should().BeEmpty();
         request.WidthPx.Should().Be(640);
         request.HeightPx.Should().Be(360);
@@ -152,7 +151,7 @@ public class RecommendationReportServiceTests
     }
 
     [Fact]
-    public async Task CreateAsync_uses_the_same_walking_route_for_the_overview_and_detail_map()
+    public async Task CreateAsync_keeps_the_road_route_on_the_map_and_walking_metrics_separate()
     {
         var (service, _, mapProvider, walkingProvider) = CreateService();
         GeoPoint[] walkingPath = [VenueLocation, new GeoPoint(41.02, 29.03), new GeoPoint(41.1, 29.1)];
@@ -163,10 +162,10 @@ public class RecommendationReportServiceTests
         await service.CreateAsync(VenueName, result, CancellationToken.None);
 
         var marker = mapProvider.LastRequest!.Markers.Single(item => item.Label == NearHotel);
-        marker.Path.Should().Equal(walkingPath);
-        marker.PathSegments.Should().ContainSingle().Which.Should().Equal(walkingPath);
+        marker.Path.Should().Equal(NearPath);
+        marker.PathSegments.Should().ContainSingle().Which.Should().Equal(NearPath);
         marker.WalkingMetrics!.Path.Should().Equal(walkingPath);
-        marker.Path.Should().NotEqual(NearPath);
+        marker.Path.Should().NotEqual(walkingPath);
     }
 
     [Theory]

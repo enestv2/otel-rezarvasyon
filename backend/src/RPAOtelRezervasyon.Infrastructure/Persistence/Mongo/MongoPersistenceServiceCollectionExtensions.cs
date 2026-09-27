@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using RPAOtelRezervasyon.Domain.Abstractions;
@@ -39,6 +40,8 @@ public static class MongoPersistenceServiceCollectionExtensions
 
         services.AddSingleton<IGeocodeCache, MongoGeocodeCache>();
         services.AddHostedService<MongoIndexInitializer>();
+        services.AddHealthChecks()
+            .AddCheck<MongoGeocodeCacheHealthCheck>("mongo-geocode-cache", tags: ["storage"]);
 
         return services;
     }

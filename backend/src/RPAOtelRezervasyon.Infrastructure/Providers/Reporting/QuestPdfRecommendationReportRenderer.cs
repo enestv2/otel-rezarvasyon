@@ -210,7 +210,7 @@ public sealed class QuestPdfRecommendationReportRenderer : IRecommendationReport
     private static string MapLegend(StaticMapImage map)
     {
         var source = map.Attribution is null ? "Şematik görünüm. " : string.Empty;
-        return $"{source}Numaralar otel tablosundaki sırayı gösterir. Yalnızca sağlayıcıdan alınan yol geometrileri çizilir; geometri yoksa rota çizgisi gösterilmez.";
+        return $"{source}Numaralar otel tablosundaki sırasını gösterir. Renkli bağlantı ucu otelin gerçek konumudur; rozet konumda kalıyorsa rozet merkezi konumdur. Yalnızca sağlayıcıdan alınan yol geometrileri çizilir; geometri yoksa rota çizgisi gösterilmez.";
     }
     private static void ComposeTable(IContainer container, RecommendationReport report)
     {

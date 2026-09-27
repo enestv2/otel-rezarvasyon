@@ -33,12 +33,12 @@ public sealed class MongoGeocodeCache(IMongoCollection<GeocodeCacheDocument> col
         }
         catch (MongoException ex)
         {
-            LogCacheUnavailable(ex, id);
+            LogCacheUnavailable(ex);
             return null;
         }
         catch (TimeoutException ex)
         {
-            LogCacheUnavailable(ex, id);
+            LogCacheUnavailable(ex);
             return null;
         }
     }
@@ -71,14 +71,15 @@ public sealed class MongoGeocodeCache(IMongoCollection<GeocodeCacheDocument> col
             var filter = Builders<GeocodeCacheDocument>.Filter.Eq(existing => existing.Id, document.Id);
             await collection.ReplaceOneAsync(filter, document, new ReplaceOptions { IsUpsert = true }, cancellationToken)
                 .ConfigureAwait(false);
+            logger.LogInformation("Geocode cache upsert completed.");
         }
         catch (MongoException ex)
         {
-            LogCacheUnavailable(ex, document.Id);
+            LogCacheUnavailable(ex);
         }
         catch (TimeoutException ex)
         {
-            LogCacheUnavailable(ex, document.Id);
+            LogCacheUnavailable(ex);
         }
     }
 
@@ -94,6 +95,6 @@ public sealed class MongoGeocodeCache(IMongoCollection<GeocodeCacheDocument> col
         return new CachedLocation(location, document.ProviderId, document.DisplayName, createdAt);
     }
 
-    private void LogCacheUnavailable(Exception exception, string id) =>
-        logger.LogWarning(exception, "Konum önbelleği kullanılamadı; kayıt atlanıyor: {CacheKey}.", id);
+    private void LogCacheUnavailable(Exception exception) =>
+        logger.LogWarning("Geocode cache operation skipped ({ExceptionType}).", exception.GetType().Name);
 }
