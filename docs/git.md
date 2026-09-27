@@ -1,18 +1,23 @@
 # Git
 
-> **Template — adjust at bootstrap.** Defaults below are safe; loosen consciously, not accidentally.
+> Bootstrap ile dolduruldu (2026-09-25). Varsayılanlar güvenlidir; gevşetmek bilinçli bir karar olur.
 
-## Branching
-- `feature/<spec-no>-<short-name>` — **no branch without a spec.**
-- Fixes: `fix/<spec-no>-<short-name>`; incidents: `incident/<date>-<short-name>`.
+## Dallanma
+- `feature/<spec-no>-<kısa-ad>` — **spec olmadan branch yok.**
+- Düzeltmeler: `fix/<spec-no>-<kısa-ad>`; olaylar: `incident/<tarih>-<kısa-ad>`.
+- Bootstrap/workspace kurulum işleri (ilk spec öncesi) doğrudan `main` üzerinde yapılabilir; ilk
+  spec'ten itibaren dallanma zorunludur.
 
-## Commits
-- Conventional Commits, with a plan reference: `feat(catalog): paging endpoint [plan 0001/3]`.
-- Agent commits follow the same standard: the agent writes the message, the human approves.
+## Commit'ler
+- Conventional Commits + plan referansı: `feat(routing): mesafe sağlayıcısı [plan 0001/3]`.
+- Ajan commit'leri de aynı standarda uyar: mesajı ajan yazar, insan onaylar.
+- Commit mesajları **İngilizce**; kod içi yorumlar ve dokümanlar Türkçe olabilir.
+- Gerçek yerel değerler içeren `backend/src/RPAOtelRezervasyon.Api/Properties/launchSettings.json` ignore edilir; yalnız secret'sız `launchSettings.example.json` paylaşılır.
 
-## Forbidden
-- Direct commits to the default branch.
-- Force push, history rewriting on shared branches. Undo = `git revert` (see recovery R-11).
+## Yasaklar
+- Varsayılan dala doğrudan commit (ilk spec'ten sonra).
+- Force push; paylaşılan dallarda geçmişi yeniden yazma. Geri alma = `git revert` (bkz. R-11).
 
-## Pull requests
-- PR template checklist completed; `scripts/check` green in CI; squash-merge.
+## Pull request
+- PR şablonu doldurulur; CI'da `scripts/check` yeşil; squash-merge.
+- Her PR'da bir spec bağlantısı olur (AGENTS.md kural 1).

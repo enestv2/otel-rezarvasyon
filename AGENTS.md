@@ -1,13 +1,10 @@
 # AGENTS.md — Project Rules
 
-> **STATUS: NOT CONFIGURED.** This workspace has not been adapted to a project yet.
-> The only correct first action is the bootstrap workflow (`workflows/bootstrap.md`).
-> Until bootstrap completes and rewrites this file, do not write application code.
+**Project:** RPAOtelRezervasyon — bir etkinlik alanı adı ve kurumun anlaşmalı otel adları listesini alır; konum bulma (geocoding) ve mesafe/süre (routing) sağlayıcılarıyla en uygun oteli belirleyip rezervasyon birimine önerir. .NET 10 (ASP.NET Core) servisi. Ayrıntı: `docs/architecture.md`.
 
 ## Operating mode
 
-**Mode: unset** — bootstrap sets this to `lite` or `strict` (see `workflows/README.md`).
-Every workflow honors the gates of the current mode.
+**Mode: lite** — Spec → Plan → [insan onayı] → Build → Independent Review → Verify (bkz. `workflows/README.md`).
 
 ## Invariant rules (these survive bootstrap — never delete or weaken them)
 
