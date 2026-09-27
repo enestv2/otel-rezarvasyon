@@ -4,13 +4,12 @@ Thumbs.db
 .idea/
 *.swp
 
-# Secrets — never commit these
-.env
-.env.*
-!.env.example
-
 # Logs
 *.log
+
+# .NET build output
+bin/
+obj/
 
 # Claude Code personal settings (shared settings.json IS committed after init)
 .claude/settings.local.json

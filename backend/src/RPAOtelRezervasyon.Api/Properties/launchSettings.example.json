@@ -1,0 +1,73 @@
+{
+    "$schema":  "https://json.schemastore.org/launchsettings.json",
+    "profiles":  {
+                     "http":  {
+                                  "commandName":  "Project",
+                                  "dotnetRunMessages":  true,
+                                  "launchBrowser":  true,
+                                  "applicationUrl":  "http://localhost:5185",
+                                  "environmentVariables":  {
+                                                               "Geoapify__BaseUrl":  "https://api.geoapify.com",
+                                                               "Geoapify__RoutingMode":  "drive",
+                                                               "Geoapify__RequestsPerSecond":  "2",
+                                                               "Geoapify__RetryMaxAttempts":  "2",
+                                                               "Mongo__ConnectionString":  "mongodb://localhost:27017",
+                                                               "Mongo__Database":  "rpaotelrezervasyon",
+                                                               "Mongo__GeocodeCollection":  "geocode_cache",
+                                                               "Mongo__CacheTtlDays":  "180",
+                                                               "Reporting__MapWidthPx":  "640",
+                                                               "Reporting__MapHeightPx":  "360",
+                                                               "Reporting__MaxDocumentBytes":  "5242880",
+                                                               "Reporting__DocumentTitle":  "Otel Onerisi",
+                                                               "StaticMap__BaseUrl":  "https://maps.geoapify.com/v1/staticmap",
+                                                               "StaticMap__Style":  "osm-bright",
+                                                               "StaticMap__Attribution":  "Powered by Geoapify",
+                                                               "StaticMap__RequestsPerSecond":  "1",
+                                                               "StaticMap__RetryMaxAttempts":  "2",
+                                                               "StaticMap__MaxZoom":  "18",
+                                                               "ASPNETCORE_ENVIRONMENT":  "Development",
+                                                               "Llm__Enabled":  "false",
+                                                               "Llm__BaseUrl":  "https://api.openai.com/v1",
+                                                               "Llm__Model":  "",
+                                                               "Llm__TimeoutSeconds":  "25",
+                                                               "Llm__MaxOutputTokens":  "350",
+                                                               "Llm__Temperature":  "0",
+                                                               "Llm__ApiKey":  ""
+                                                           }
+                              },
+                     "https":  {
+                                   "commandName":  "Project",
+                                   "dotnetRunMessages":  true,
+                                   "launchBrowser":  true,
+                                   "applicationUrl":  "https://localhost:7094;http://localhost:5185",
+                                   "environmentVariables":  {
+                                                                "Geoapify__BaseUrl":  "https://api.geoapify.com",
+                                                                "Geoapify__RoutingMode":  "drive",
+                                                                "Geoapify__RequestsPerSecond":  "2",
+                                                                "Geoapify__RetryMaxAttempts":  "2",
+                                                                "Mongo__ConnectionString":  "mongodb://localhost:27017",
+                                                                "Mongo__Database":  "rpaotelrezervasyon",
+                                                                "Mongo__GeocodeCollection":  "geocode_cache",
+                                                                "Mongo__CacheTtlDays":  "180",
+                                                                "Reporting__MapWidthPx":  "640",
+                                                                "Reporting__MapHeightPx":  "360",
+                                                                "Reporting__MaxDocumentBytes":  "5242880",
+                                                                "Reporting__DocumentTitle":  "Otel Onerisi",
+                                                                "StaticMap__BaseUrl":  "https://maps.geoapify.com/v1/staticmap",
+                                                                "StaticMap__Style":  "osm-bright",
+                                                                "StaticMap__Attribution":  "Powered by Geoapify",
+                                                                "StaticMap__RequestsPerSecond":  "1",
+                                                                "StaticMap__RetryMaxAttempts":  "2",
+                                                                "StaticMap__MaxZoom":  "18",
+                                                                "ASPNETCORE_ENVIRONMENT":  "Development",
+                                                                "Llm__Enabled":  "false",
+                                                                "Llm__BaseUrl":  "https://api.openai.com/v1",
+                                                                "Llm__Model":  "",
+                                                                "Llm__TimeoutSeconds":  "25",
+                                                                "Llm__MaxOutputTokens":  "350",
+                                                                "Llm__Temperature":  "0",
+                                                                "Llm__ApiKey":  ""
+                                                            }
+                               }
+                 }
+}

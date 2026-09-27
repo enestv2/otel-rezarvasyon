@@ -1,0 +1,11 @@
+<Project>
+  <!-- Üst dizindeki ortak yapılandırmayı devral. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!-- Konvansiyon: test metodu adları <Metot>_<Durum>_<Beklenen> (docs/conventions.md). -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+    <!-- Test sınıfları public olmak zorunda (xUnit). -->
+    <NoWarn>$(NoWarn);CA1515</NoWarn>
+  </PropertyGroup>
+</Project>

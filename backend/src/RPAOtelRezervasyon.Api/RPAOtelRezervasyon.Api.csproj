@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RPAOtelRezervasyon.Application\RPAOtelRezervasyon.Application.csproj" />
+    <ProjectReference Include="..\RPAOtelRezervasyon.Infrastructure\RPAOtelRezervasyon.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>89ad0039-8942-4141-82ad-e02931c1ba41</UserSecretsId>
+  </PropertyGroup>
+
+</Project>
